@@ -27,3 +27,48 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     }
   });
 });
+
+// Contact form submission
+const contactForm = document.querySelector('.contact-form');
+if (contactForm) {
+  contactForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(this);
+    const submitButton = this.querySelector('button[type="submit"]');
+    const originalText = submitButton.textContent;
+    
+    // Disable button and show loading
+    submitButton.disabled = true;
+    submitButton.textContent = 'Sending...';
+    
+    fetch(this.action, {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'Accept': 'application/json'
+      }
+    })
+    .then(response => {
+      if (response.ok) {
+        // Success
+        submitButton.textContent = 'Sent!';
+        this.reset();
+        setTimeout(() => {
+          submitButton.disabled = false;
+          submitButton.textContent = originalText;
+        }, 3000);
+      } else {
+        throw new Error('Form submission failed');
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      submitButton.textContent = 'Error - Try Again';
+      setTimeout(() => {
+        submitButton.disabled = false;
+        submitButton.textContent = originalText;
+      }, 3000);
+    });
+  });
+}
