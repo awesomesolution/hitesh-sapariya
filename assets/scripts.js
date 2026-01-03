@@ -3,11 +3,34 @@ const navToggle = document.getElementById('nav-toggle');
 const primaryNav = document.getElementById('primary-nav');
 
 if (navToggle && primaryNav) {
-  navToggle.addEventListener('click', function() {
+  // Handle both click and touch events for better mobile support
+  const toggleMenu = function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    
     const isOpen = primaryNav.classList.contains('open');
     primaryNav.classList.toggle('open');
     navToggle.setAttribute('aria-expanded', !isOpen);
+  };
+  
+  navToggle.addEventListener('click', toggleMenu);
+  navToggle.addEventListener('touchstart', toggleMenu, { passive: false });
+  
+  // Close menu when clicking outside
+  document.addEventListener('click', function(e) {
+    if (!navToggle.contains(e.target) && !primaryNav.contains(e.target)) {
+      primaryNav.classList.remove('open');
+      navToggle.setAttribute('aria-expanded', false);
+    }
   });
+  
+  // Close menu when touching outside on mobile
+  document.addEventListener('touchstart', function(e) {
+    if (!navToggle.contains(e.target) && !primaryNav.contains(e.target)) {
+      primaryNav.classList.remove('open');
+      navToggle.setAttribute('aria-expanded', false);
+    }
+  }, { passive: true });
 }
 
 // Smooth scroll for anchor links
