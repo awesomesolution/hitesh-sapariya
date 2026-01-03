@@ -34,8 +34,19 @@ if (navToggle && primaryNav) {
     const clickX = e.clientX - rect.left;
     const clickY = e.clientY - rect.top;
     
-    // If clicked on overlay or in the top-right close area
-    if (e.target === primaryNav || (clickX > rect.width - 60 && clickY < 60)) {
+    // If clicked on overlay (not on the menu card)
+    if (e.target === primaryNav) {
+      primaryNav.classList.remove('open');
+      navToggle.setAttribute('aria-expanded', false);
+      body.style.overflow = '';
+    }
+    
+    // Check for close button (top-right area of the menu)
+    const menuRect = primaryNav.querySelector('ul').getBoundingClientRect();
+    const menuClickX = e.clientX - menuRect.left;
+    const menuClickY = e.clientY - menuRect.top;
+    
+    if (menuClickX > menuRect.width - 60 && menuClickY < 60) {
       primaryNav.classList.remove('open');
       navToggle.setAttribute('aria-expanded', false);
       body.style.overflow = '';
