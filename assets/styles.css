@@ -85,7 +85,9 @@ body{
   background:var(--accent);
   transition: width 0.3s ease;
 }
-.primary-nav a:hover::after{width:100%}
+.primary-nav{
+  transition: all 0.3s ease;
+}
 
 /* Mobile nav toggle */
 #nav-toggle{
@@ -93,6 +95,7 @@ body{
   background:none;
   border:0;
   padding:.25rem;
+  transition: all 0.3s ease;
 }
 .hamburger{
   width:26px;height:2px;background:#0f172a;display:block;position:relative;
@@ -279,20 +282,44 @@ body{
 }
 
 /* Responsive */
+@media (min-width: 721px) {
+  /* Ensure desktop navigation is always visible and properly styled */
+  #nav-toggle {
+    display: none !important;
+  }
+  .primary-nav {
+    display: block !important;
+    position: static !important;
+    background: transparent !important;
+    backdrop-filter: none !important;
+    width: auto !important;
+    height: auto !important;
+    z-index: auto !important;
+  }
+  .primary-nav.open {
+    display: block !important;
+  }
+  .primary-nav::after,
+  .primary-nav::before {
+    display: none !important;
+  }
+}
+
 @media (max-width:980px){
   .hero{grid-template-columns:1fr}
   .project-card{grid-template-columns:1fr}
 }
+
 @media (max-width:720px){
   #nav-toggle{
-    display:block !important;
+    display:block;
     z-index:1000;
     position:relative;
     cursor:pointer;
     -webkit-tap-highlight-color: transparent;
   }
   .primary-nav{
-    display:none !important;
+    display:none;
     position:fixed;
     top:0;
     left:0;
@@ -303,7 +330,7 @@ body{
     backdrop-filter: blur(2px);
   }
   .primary-nav.open{
-    display:flex !important;
+    display:flex;
     align-items:center;
     justify-content:center;
   }

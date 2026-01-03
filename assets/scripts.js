@@ -136,3 +136,12 @@ if (contactForm) {
     });
   });
 }
+
+// Handle window resize to close mobile menu when switching to desktop
+window.addEventListener('resize', function() {
+  if (window.innerWidth > 720 && primaryNav && primaryNav.classList.contains('open')) {
+    primaryNav.classList.remove('open');
+    if (navToggle) navToggle.setAttribute('aria-expanded', false);
+    body.style.overflow = '';
+  }
+});
